@@ -1,11 +1,11 @@
 <?php 
 // $new_user = [
 // 	[
-// 		'name' => 'Shane',
+// 		'name' => 'shane',
 // 		'pw' => 'abc',
 // 	],
 // 	[
-// 		'name' => 'Joan',
+// 		'name' => 'joan',
 // 		'pw' => 'asd'
 // 	]
 // ];
@@ -15,24 +15,21 @@
 // fclose($fp);
 
 
-if (isset($_POST['change_pw'])) {
+if (isset($_POST['del'])) {
 $list = file_get_contents('passwords.json');
 if ($list)
 	$array = json_decode($list, true);
 $name = $_POST['name'];
-$old_pw = $_POST['old_pw'];
-$new_pw = $_POST['new_pw'];
-$retype = $_POST['retype'];
+$password = $_POST['password'];
 
 $index;
 
 foreach ($array as $key => $value) {
 	if ($value['name'] == $name 
-		&& $value['pw'] == $old_pw
-		&& $new_pw == $retype) {
+		&& $value['pw'] == $password) {
 		$index = $key;
-		echo "password changed";
-		$array[$index]['pw'] = $new_pw;
+		echo "deleted";
+		unset($array[$index]);
 	}
 }
 
@@ -58,14 +55,12 @@ fclose($fp);
 <body>
 <form method="POST">
 <ul class="form-style-1">
-	<h2>Change Password</h2>	
+	<h2>Delete Account</h2>	
     <li><label>Username<span class="required">*</span></label><input type="text" name="name"></li>
 
-    <li><label>Old Password<span class="required">*</span></label><input type="password" name="old_pw"></li>
-    <li><label>New Password<span class="required">*</span></label><input type="password" name="new_pw"></li>
-    <li><label>Retype New Password<span class="required">*</span></label><input type="password" name="retype"></li>
+    <li><label>Password<span class="required">*</span></label><input type="password" name="password"></li>
 
-    <li><input type="submit" name="change_pw" value="Submit"/></li>
+    <li><input type="submit" name="del" value="Delete"/></li>
 </ul>
 </form>
 
